@@ -1,0 +1,20 @@
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\bin\Debug\net10.0-windows\RCB Improved.exe
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\bin\Debug\net10.0-windows\RCB Improved.deps.json
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\bin\Debug\net10.0-windows\RCB Improved.runtimeconfig.json
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\bin\Debug\net10.0-windows\RCB Improved.dll
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\bin\Debug\net10.0-windows\RCB Improved.pdb
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\bin\Debug\net10.0-windows\RCBLibrary.dll
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\bin\Debug\net10.0-windows\RCBLibrary.pdb
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\RCB Improved.csproj.AssemblyReference.cache
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\RCB_Improved.Form1.resources
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\RCB Improved.csproj.GenerateResource.cache
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\RCB Improved.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\RCB Improved.AssemblyInfoInputs.cache
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\RCB Improved.AssemblyInfo.cs
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\RCB Improved.csproj.CoreCompileInputs.cache
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\RCB Impr.3B002AE0.Up2Date
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\RCB Improved.dll
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\refint\RCB Improved.dll
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\RCB Improved.pdb
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\RCB Improved.genruntimeconfig.cache
+C:\Users\gamin\source\repos\RCB Improved\RCB Improved\obj\Debug\net10.0-windows\ref\RCB Improved.dll

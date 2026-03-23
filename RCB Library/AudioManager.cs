@@ -34,6 +34,13 @@ namespace RCBLibrary
             backgroundMusicPaths.Add(path);
         }
 
+        public void RemoveBackgroundMusic(string path)
+        {
+            backgroundMusicPaths.Remove(path);
+        }
+
+        public void ClearAllBackgroundMusic() { backgroundMusic.Clear(); }
+
         public void Initialize()
         {
             foreach (string path in backgroundMusicPaths)

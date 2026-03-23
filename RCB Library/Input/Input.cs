@@ -12,7 +12,7 @@ namespace RCBLibrary.Input
     /// </summary>
     /// <typeparam name="I">is the input type. Not the mappping.</typeparam>
     /// <typeparam name="M">is the input mapping. Not the type.</typeparam>
-    public static class Input<I,O> where O : new() 
+    public static class Input<I,O>
     {         
         public static O In<M>(M mapping, I input) where M : IInputMapping<I,O>
         {

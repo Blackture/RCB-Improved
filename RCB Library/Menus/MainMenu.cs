@@ -11,9 +11,13 @@ namespace RCBLibrary.Menus
 {
     public class MainMenu : Menu, IMenu
     {
+        public MainMenu() : base("Main Menu")
+        {
+        }
+
         public override void Render()
         {
-            Debug.WriteLine("Library MainMenu Render");
+            Debug.WriteLine("Library Main Menu Render");
         }
 
         public override void MenuInput()
@@ -25,6 +29,8 @@ namespace RCBLibrary.Menus
 
         protected override void MenuInputCallback(InputRequest ir)
         {
+            if (Game.Instance.CurrentMenu != this) return;
+
             if (ir == null) return;
             int? i = (ir as IntRequest)?.Value;
 
@@ -38,16 +44,20 @@ namespace RCBLibrary.Menus
 
         protected override void ProcessInput(int input)
         {
-            MAIN_MENU_INPUT inp = Input<int, MAIN_MENU_INPUT>.In(new MainMenuMapping(), (int)input);
+            MAIN_MENU_INPUT inp = (MAIN_MENU_INPUT)input;
             switch (inp)
             {
-                case MAIN_MENU_INPUT.Start:
+                case MAIN_MENU_INPUT.Singleplayer:
+                    Game.Instance.Start();
                     Debug.WriteLine("Start selected");
                     // Select Menu
                     break;
+                case MAIN_MENU_INPUT.Online:
+                    Debug.WriteLine("Online selected");
+                    // Select Menu
+                    break;
                 case MAIN_MENU_INPUT.Settings:
-                    Debug.WriteLine("Settings selected");
-                    // Select Settings Menu
+                    Game.Instance.ShowMenu("Settings Menu");
                     break;
                 case MAIN_MENU_INPUT.Exit:
                     Exit();

@@ -70,7 +70,7 @@ namespace RCBLibrary
             backgroundMusic[currentBMIndex].Play(volume);
         }
 
-        public void SetBMVolume(int volume)
+        public void SetBackgroundMusicVolume(int volume)
         {
             backgroundMusic[currentBMIndex].SetVolume(volume);
         }

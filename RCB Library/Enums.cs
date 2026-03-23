@@ -18,8 +18,16 @@ namespace RCBLibrary
 
     public enum MAIN_MENU_INPUT
     {
-        Start = 0,
-        Settings = 1,
-        Exit = 2
+        Singleplayer = 0,
+        Online = 1,
+        Settings = 2,
+        Exit = 3
+    }
+
+    public enum SETTINGS_MENU_INPUT
+    {
+        Back = 0,
+        BackgroundMusicVolume = 1,
+        Controls = 2,
     }
 }

@@ -7,6 +7,8 @@ namespace RCBImprovedC
 {
     public class MainMenu : RCBLibrary.Menus.MainMenu
     {
+        public int lines = 5;
+
         public override void Render()
         {
             Console.WriteLine("Main Menu");

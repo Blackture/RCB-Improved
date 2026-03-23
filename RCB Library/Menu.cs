@@ -12,8 +12,12 @@ namespace RCBLibrary
 {
     public abstract class Menu : IMenu
     {
-        public Menu() 
+        private string key;
+        public string Key { get => key; }
+
+        public Menu(string key) 
         {
+            this.key = key;
         }
 
         public void Show()

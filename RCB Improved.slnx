@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="RCB Improved/RCB Improved.csproj" />
+  <Project Path="RCB Library/RCBLibrary.csproj" />
+  <Project Path="RCBImprovedC/RCBImprovedC.csproj" />
+</Solution>

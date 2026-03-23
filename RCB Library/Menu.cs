@@ -1,6 +1,5 @@
 ﻿using RCBLibrary.Input;
 using RCBLibrary.Input.Errors;
-using RCBLibrary.Input.Mappings;
 using RCBLibrary.Input.Requests;
 using System;
 using System.Collections.Generic;

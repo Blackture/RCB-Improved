@@ -1,7 +1,6 @@
 ﻿using RCBLibrary.Events;
 using RCBLibrary.Input;
 using RCBLibrary.Input.Errors;
-using RCBLibrary.Input.Mappings;
 using RCBLibrary.Input.Requests;
 using System;
 using System.Collections.Generic;
@@ -34,6 +33,8 @@ namespace RCBLibrary.Menus
 
         public override void MenuInput()
         {
+            if (Game.Instance.CurrentMenu != this) return;
+
             IntRequest r = new IntRequest("Settings Menu");
             r.Subscribe(MenuInputCallback);
             r.Send();

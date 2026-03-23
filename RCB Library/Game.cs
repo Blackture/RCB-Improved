@@ -57,7 +57,7 @@ namespace RCBLibrary
             Error.AddListener(OnError);
             settings = new SettingsData()
             {
-                BackgroundMusicVolume = 75,
+                BackgroundMusicVolume = 20,
             };
 
             menus = new Dictionary<string, Menu>()
@@ -65,7 +65,7 @@ namespace RCBLibrary
                 { "Main Menu", new MainMenu()  },
                 { "Settings Menu", new SettingsMenu() },
             };
-            AudioManager.Instance.Initialize();
+            AudioManager.Instance.Initialize(settings);
         }
 
         public void Awake()

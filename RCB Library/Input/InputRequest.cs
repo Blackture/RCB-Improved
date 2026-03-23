@@ -23,6 +23,8 @@ namespace RCBLibrary.Input
 
         public void Send()
         {
+            if (!Game.Instance.Active) return;
+
             Game.Instance.Input.Invoke(this);
         }
 

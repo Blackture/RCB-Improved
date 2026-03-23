@@ -41,8 +41,10 @@ namespace RCBLibrary
 
         public void ClearAllBackgroundMusic() { backgroundMusic.Clear(); }
 
-        public void Initialize()
+        public void Initialize(SettingsData settings)
         {
+            volume = settings.BackgroundMusicVolume;
+
             foreach (string path in backgroundMusicPaths)
             {
                 // Ensure we are looking in the execution directory

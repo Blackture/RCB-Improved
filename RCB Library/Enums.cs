@@ -16,6 +16,15 @@ namespace RCBLibrary
         STR
     }
 
+    public enum STAT_TYPE
+    {
+        NONE,
+        INT,
+        FLOAT,
+        ELEMENT,
+        BOOL
+    }
+
     public enum MAIN_MENU_INPUT
     {
         Singleplayer = 0,
@@ -29,5 +38,13 @@ namespace RCBLibrary
         Back = 0,
         BackgroundMusicVolume = 1,
         Controls = 2,
+    }
+
+    public enum ELEMENT
+    {
+        Fire,
+        Water,
+        Earth,
+        Air
     }
 }

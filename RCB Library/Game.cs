@@ -1,6 +1,8 @@
-﻿using RCBLibrary.Events;
+﻿using RCBLibrary.Character;
+using RCBLibrary.Events;
 using RCBLibrary.Input;
 using RCBLibrary.Menus;
+using System.Collections;
 using System.Diagnostics;
 
 namespace RCBLibrary
@@ -55,6 +57,23 @@ namespace RCBLibrary
         public void Initialize()
         {
             Error.AddListener(OnError);
+            settings = new SettingsData()
+            {
+                BackgroundMusicVolume = 20,
+            };
+
+            menus = new Dictionary<string, Menu>()
+            {
+                { "Main Menu", new MainMenu()  },
+                { "Settings Menu", new SettingsMenu() },
+            };
+            AudioManager.Instance.Initialize(settings);
+        }
+
+        public void Initialize(params Stat[] stats)
+        {
+            Error.AddListener(OnError);
+            Stats.Initialize(stats);
             settings = new SettingsData()
             {
                 BackgroundMusicVolume = 20,

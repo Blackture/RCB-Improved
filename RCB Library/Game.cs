@@ -67,7 +67,6 @@ namespace RCBLibrary
                 { "Main Menu", new MainMenu()  },
                 { "Settings Menu", new SettingsMenu() },
             };
-            AudioManager.Instance.Initialize(settings);
         }
 
         public void Initialize(params Stat[] stats)
@@ -84,12 +83,13 @@ namespace RCBLibrary
                 { "Main Menu", new MainMenu()  },
                 { "Settings Menu", new SettingsMenu() },
             };
-            AudioManager.Instance.Initialize(settings);
         }
 
         public void Awake()
         {
-            (menus["Settings Menu"] as SettingsMenu).Initialize(settings);
+            AudioManager.Instance.Awake(settings);
+
+            (menus["Settings Menu"] as SettingsMenu)?.Initialize(settings);
             currentMenu = menus["Main Menu"];
             AudioManager.Instance.PlayBackgroundMusic();
             ShowMenu("Main Menu");

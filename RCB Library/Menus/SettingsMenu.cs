@@ -2,6 +2,7 @@
 using RCBLibrary.Input;
 using RCBLibrary.Input.Errors;
 using RCBLibrary.Input.Requests;
+using RCBLibrary.Math;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -57,7 +58,7 @@ namespace RCBLibrary.Menus
 
         protected override void ProcessInput(int input)
         {
-            SETTINGS_MENU_INPUT setting = (SETTINGS_MENU_INPUT)Math.Floor(input / 10f);
+            SETTINGS_MENU_INPUT setting = (SETTINGS_MENU_INPUT)Mathf.Floor(input / 10f);
 
             switch (setting)
             {

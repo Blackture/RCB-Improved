@@ -18,6 +18,7 @@ namespace RCBImprovedC
         {
             Game.Instance.Initialize();
             Game.Instance.OverrideMenus(menuOverrides);
+            //AudioManager.Instance.AddBackgroundMusic(bla);
 
             Game.Instance.Error.AddListener((e) => {
                 (int left, int top) = Console.GetCursorPosition();

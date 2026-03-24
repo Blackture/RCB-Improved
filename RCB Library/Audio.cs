@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.VisualBasic.FileIO;
 using NAudio;
 using NAudio.Wave;
+using RCBLibrary.Math;
 
 namespace RCBLibrary
 {
@@ -29,17 +30,33 @@ namespace RCBLibrary
         private WaveChannel32? volumeStream;
         private WaveStream? mainOutputStream;
         private Action? onPlaybackStopped;
+        private string name;
+        private int index;
+        private bool isPlaying;
 
         public string Path => path;
+        public string Name => name;
+        public int Index => index;
+        public bool IsPlaying => isPlaying;
 
-        private Audio(string path)
+        private Audio(string path, int index)
         {
             this.path = path;
+            this.index = index;
+            name = GetName();
         }
 
-        public static bool Create(string path, out Audio? audio)
+        private string GetName()
         {
-            audio = new Audio(path);
+            string ext = System.IO.Path.GetExtension(path).ToLower();
+            string last = path.Split('/').Last();
+            last = last.Replace(ext, "");
+            return last;
+        }
+
+        public static bool Create(string path, int index, out Audio? audio)
+        {
+            audio = new Audio(path, index);
             if (!audio.ValidatePath())
             {
                 audio = null;
@@ -108,6 +125,7 @@ namespace RCBLibrary
 
             SetVolume(initialVolume);
             player.Play();
+            isPlaying = true;
         }
 
         public void Subscribe(Action action)
@@ -121,8 +139,13 @@ namespace RCBLibrary
         {
             if (volumeStream != null)
             {
-                volumeStream.Volume = Math.Clamp(volume / 100f, 0f, 1f);
+                volumeStream.Volume = Mathf.Clamp(volume / 100f, 0f, 1f);
             }
+        }
+
+        public void Stop()
+        {
+            player?.Stop();
         }
 
         private void DisposeExisting()
@@ -133,6 +156,7 @@ namespace RCBLibrary
             player = null;
             volumeStream = null;
             mainOutputStream = null;
+            isPlaying = false;
         }
     }
 }

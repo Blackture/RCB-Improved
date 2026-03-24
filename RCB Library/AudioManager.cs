@@ -41,16 +41,16 @@ namespace RCBLibrary
 
         public void ClearAllBackgroundMusic() { backgroundMusic.Clear(); }
 
-        public void Initialize(SettingsData settings)
+        public void Awake(SettingsData settings)
         {
             volume = settings.BackgroundMusicVolume;
 
-            foreach (string path in backgroundMusicPaths)
+            for (int i = 0; i < backgroundMusicPaths.Count; i++)
             {
                 // Ensure we are looking in the execution directory
-                string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+                string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, backgroundMusicPaths[i]);
 
-                if (Audio.Create(fullPath, out Audio? audio) && audio != null)
+                if (Audio.Create(fullPath, i, out Audio? audio) && audio != null)
                 {
                     // SUBSCRIBE HERE - ONCE.
                     audio.Subscribe(PlayNextBackgroundMusic);
@@ -61,6 +61,11 @@ namespace RCBLibrary
 
         public void PlayBackgroundMusic()
         {
+            if (backgroundMusic[currentBMIndex].IsPlaying)
+            {
+                backgroundMusic[currentBMIndex].Stop();
+            }
+
             if (backgroundMusic.Count <= 0)
             {
                 // If this triggers, check your "Copy to Output Directory" settings!
@@ -70,6 +75,30 @@ namespace RCBLibrary
 
             // Just Play. The callback is already registered in Initialize.
             backgroundMusic[currentBMIndex].Play(volume);
+        }
+
+        public void PlayBackgroundMusic(string name)
+        {
+            Audio? a = backgroundMusic.Find(x => x.Name == name);
+            if (a != null)
+            {
+                currentBMIndex = a.Index;
+                PlayBackgroundMusic();
+            }
+            else
+            {
+                new AudioNotFoundError(name).Send();
+            }
+        }
+
+        public void PlayBackgroundMusic(int index)
+        {
+            if (index < 0 || index >= backgroundMusic.Count)
+            {
+                new OutOfRangeError(0, backgroundMusic.Count - 1, index);
+            }
+            currentBMIndex = index;
+            PlayBackgroundMusic();
         }
 
         public void SetBackgroundMusicVolume(int volume)

@@ -1,4 +1,5 @@
-﻿using RCBLibrary.Events;
+﻿using RCBImprovedC;
+using RCBLibrary.Events;
 using RCBLibrary.Input;
 using RCBLibrary.Input.Errors;
 using RCBLibrary.Input.Requests;
@@ -10,7 +11,7 @@ using System.Text;
 
 namespace RCBLibrary.Menus
 {
-    public class SettingsMenu : Menu, IMenu
+    public class SettingsMenu : Menu, IUIElement
     {
         private Event settingsDataChanged = new Event();
         private SettingsData settingsData;
@@ -32,18 +33,18 @@ namespace RCBLibrary.Menus
             Debug.WriteLine("Library Settings Menu Render");
         }
 
-        public override void MenuInput()
+        public override void Input()
         {
-            if (Game.Instance.CurrentMenu != this) return;
+            if (UIManager.Instance.CurrentElement != this) return;
 
             IntRequest r = new IntRequest("Settings Menu");
-            r.Subscribe(MenuInputCallback);
+            r.Subscribe(InputCallback);
             r.Send();
         }
 
-        protected override void MenuInputCallback(InputRequest ir)
+        public override void InputCallback(InputRequest ir)
         {
-            if (Game.Instance.CurrentMenu != this) return;
+            if (UIManager.Instance.CurrentElement != this) return;
 
             if (ir == null) return;
             int? i = (ir as IntRequest)?.Value;
@@ -63,7 +64,7 @@ namespace RCBLibrary.Menus
             switch (setting)
             {
                 case SETTINGS_MENU_INPUT.Back:
-                    Game.Instance.ShowMenu(Game.Instance.LastMenu);
+                    UIManager.Instance.ShowLastElement();
                     break;
                 case SETTINGS_MENU_INPUT.BackgroundMusicVolume:
                     int i = input % 10;
@@ -83,7 +84,7 @@ namespace RCBLibrary.Menus
             }
 
             settingsDataChanged.Invoke();
-            MenuInput();
+            Input();
         }
 
         public virtual void OnSettingsDataChanged()

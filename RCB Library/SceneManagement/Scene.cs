@@ -1,29 +1,78 @@
-﻿using RCBLibrary.Events;
+﻿using RCBLibrary.Character.StatTypes;
+using RCBLibrary.Events;
 using RCBLibrary.Raycast.Axis;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace RCBLibrary.SceneManagement
 {
-    public class Scene
+    public class Scene : IUIElement
     {
         private bool isProcedural = false;
         private int index;
-        private PSC proceduralSceneController;
+        private readonly PSC? proceduralSceneController;
+        private bool generated = false;
+        private bool isActive = false;
+
+        private string key;
+        private UI_ELEMENT_TYPE type;
+        public string Key => key;
+        public UI_ELEMENT_TYPE Type => type;
+
         public MapData? mapData = null;
 
+        public bool IsActive => isActive;
         public bool IsProcedural => isProcedural;
         public int Index => index;
 
-        public Event<string> GenerationUpdate = new Event<string>();
-        public Event<MapData> Generated = new Event<MapData>();
+        private Event<string> GenerationUpdate = new Event<string>();
+        private Event<MapData> Generated = new Event<MapData>();
 
-        public Scene(int index, Point dimensions, bool isProcedural = false)
+        public Scene(int index, string? key = null, Point? dimensions = null, bool isProcedural = false)
         {
             this.index = index;
             this.isProcedural = isProcedural;
-            if (isProcedural) proceduralSceneController = PSC.Generate(dimensions.X, dimensions.Y, OnGenerationUpdate, OnGenerated);
+            type = UI_ELEMENT_TYPE.SCENE;
+            this.key = key ?? $"Scene {index}";
+
+            GenerationUpdate.AddListener(LoadingRenderer);
+            Generated.AddListener(RenderMap);
+
+            if (isProcedural && dimensions != null) proceduralSceneController = PSC.Generate(dimensions.Value.X, dimensions.Value.Y, OnGenerationUpdate, OnGenerated);
+        }
+
+        public void Render()
+        {
+            if (IsProcedural && generated)
+            {
+                RenderMap(mapData!);
+            }
+        }
+
+        public void Show()
+        {
+            isActive = true;
+            Render();
+            Debug.WriteLine("Internal Show");
+        }
+
+        public void RenderMap(MapData data)
+        {
+            if (data == null) return;
+            if (!generated) return;
+            RenderMapOverride(data);
+        }
+
+        public virtual void RenderMapOverride(MapData data)
+        {
+
+        }
+
+        public virtual void LoadingRenderer(string s)
+        {
+
         }
 
         public void OnGenerated(PSC psc)
@@ -40,6 +89,8 @@ namespace RCBLibrary.SceneManagement
                 TR_StoneTriangles = psc.TR_StoneTriangles
             };
             mapData = md;
+            generated = true;
+
             Generated.Invoke(md);
         }
 

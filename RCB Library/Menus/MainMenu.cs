@@ -1,4 +1,5 @@
-﻿using RCBLibrary.Input;
+﻿using RCBImprovedC;
+using RCBLibrary.Input;
 using RCBLibrary.Input.Errors;
 using RCBLibrary.Input.Requests;
 using System;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace RCBLibrary.Menus
 {
-    public class MainMenu : Menu, IMenu
+    public class MainMenu : Menu, IUIElement
     {
         public MainMenu() : base("Main Menu")
         {
@@ -20,18 +21,18 @@ namespace RCBLibrary.Menus
             Debug.WriteLine("Library Main Menu Render");
         }
 
-        public override void MenuInput()
+        public override void Input()
         {
-            if (Game.Instance.CurrentMenu != this) return;
+            if (UIManager.Instance.CurrentElement != this) return;
 
             IntRequest r = new IntRequest("Main Menu");
-            r.Subscribe(MenuInputCallback);
+            r.Subscribe(InputCallback);
             r.Send();
         }
 
-        protected override void MenuInputCallback(InputRequest ir)
+        public override void InputCallback(InputRequest ir)
         {
-            if (Game.Instance.CurrentMenu != this) return;
+            if (UIManager.Instance.CurrentElement != this) return;
 
             if (ir == null) return;
             int? i = (ir as IntRequest)?.Value;
@@ -59,13 +60,13 @@ namespace RCBLibrary.Menus
                     // Select Menu
                     break;
                 case MAIN_MENU_INPUT.Settings:
-                    Game.Instance.ShowMenu("Settings Menu");
+                    UIManager.Instance.ShowElement("Settings Menu");
                     break;
                 case MAIN_MENU_INPUT.Exit:
                     Exit();
                     return;
             }
-            MenuInput();
+            Input();
         }
 
         public virtual void Exit()

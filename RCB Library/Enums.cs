@@ -47,4 +47,9 @@ namespace RCBLibrary
         Earth,
         Air
     }
+
+    public enum UI_ELEMENT_TYPE {
+        MENU,
+        SCENE
+    }
 }

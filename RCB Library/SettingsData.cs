@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using RCBLibrary.Math;
 
 namespace RCBLibrary
 {
@@ -10,7 +11,7 @@ namespace RCBLibrary
         public int BackgroundMusicVolume
         {
             get { return backgroundMusicvolume; }
-            set { backgroundMusicvolume = Math.Clamp(value,0,100); }
+            set { backgroundMusicvolume = (int)Mathf.Floor(Mathf.Clamp(value,0,100)); }
         }
     }
 }

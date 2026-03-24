@@ -19,7 +19,7 @@ namespace RCBImprovedC
 
         public override void OnSettingsDataChanged()
         {
-            if (Game.Instance.CurrentMenu != this) return;
+            if (UIManager.Instance.CurrentElement != this) return;
             int currentLineCursor = Console.CursorTop;
             Console.SetCursorPosition(0, 2);
             Console.Write($"Volume: Q < {SettingsData.BackgroundMusicVolume.ToString("D3")}% > E");

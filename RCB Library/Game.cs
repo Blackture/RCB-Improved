@@ -1,4 +1,5 @@
-﻿using RCBLibrary.Character;
+﻿using RCBImprovedC;
+using RCBLibrary.Character;
 using RCBLibrary.Events;
 using RCBLibrary.Input;
 using RCBLibrary.Menus;
@@ -12,47 +13,17 @@ namespace RCBLibrary
         private static readonly Lazy<Game> _lazy = new Lazy<Game>(() => new Game());
 
         private bool active = true;
-        private Menu currentMenu;
-        private string lastMenu;
+
         private bool inGame = false;
         private SettingsData settings;
-
-        private Event<string> menuChanged = new Event<string>();
 
         public Event<InputRequest> Input = new Event<InputRequest>();
         public Event<Error> Error = new Event<Error>();
 
         public static Game Instance => _lazy.Value;
         public bool Active => active;
-        public Menu CurrentMenu => currentMenu;
-        public string LastMenu => lastMenu;
 
         public bool InGame => inGame;
-
-        private Dictionary<string, Menu> menus;
-
-        public void ReRender()
-        {
-            if (currentMenu != null)
-            {
-                currentMenu.Render();
-            }
-            else
-            {
-                //ReRender Game.
-            }
-        }
-
-        public void OverrideMenus(Dictionary<string, Menu> menuOverrides)
-        {
-            for (int i = 0; i < menus.Keys.Count; i++)
-            {
-                if (menuOverrides.ContainsKey(menus.Keys.ElementAt(i)))
-                {
-                    menus[menus.Keys.ElementAt(i)] = menuOverrides[menus.Keys.ElementAt(i)];
-                }
-            }
-        }
 
         public void Initialize()
         {
@@ -62,14 +33,10 @@ namespace RCBLibrary
                 BackgroundMusicVolume = 20,
             };
 
-            menus = new Dictionary<string, Menu>()
-            {
-                { "Main Menu", new MainMenu()  },
-                { "Settings Menu", new SettingsMenu() },
-            };
+            UIManager.CreateInstance();
         }
 
-        public void Initialize(params Stat[] stats)
+        public void Initialize(Stat[] stats = null, IUIElement[] elements = null)
         {
             Error.AddListener(OnError);
             Stats.Initialize(stats);
@@ -77,22 +44,16 @@ namespace RCBLibrary
             {
                 BackgroundMusicVolume = 20,
             };
-
-            menus = new Dictionary<string, Menu>()
-            {
-                { "Main Menu", new MainMenu()  },
-                { "Settings Menu", new SettingsMenu() },
-            };
+            UIManager.CreateInstance(elements.ToList());
         }
 
         public void Awake()
         {
             AudioManager.Instance.Awake(settings);
+            UIManager.Instance.Awake(settings);
 
-            (menus["Settings Menu"] as SettingsMenu)?.Initialize(settings);
-            currentMenu = menus["Main Menu"];
             AudioManager.Instance.PlayBackgroundMusic();
-            ShowMenu("Main Menu");
+            UIManager.Instance.ShowElement("Main Menu");
         }
 
         /// <summary>
@@ -101,19 +62,6 @@ namespace RCBLibrary
         public void Start()
         {
             inGame = true;
-        }
-
-        public void ShowMenu(string title)
-        {
-            if (!menus.ContainsKey(title))
-            {
-                new MenuNotFoundError(title).Send();
-                return;
-            }
-            lastMenu = currentMenu.Key;
-            currentMenu = menus[title];
-            menuChanged.Invoke(lastMenu);
-            currentMenu.Show();
         }
 
         private void OnError(Error error)
@@ -134,7 +82,7 @@ namespace RCBLibrary
         public void ExitToMainMenu()
         {
             inGame = false;
-            ShowMenu("Main Menu");
+            UIManager.Instance.ShowElement("Main Menu");
         }
 
         /// <summary>
@@ -144,15 +92,6 @@ namespace RCBLibrary
         public void SaveSettingsToGame(SettingsData settings)
         {
             this.settings = settings;
-        }
-
-        /// <summary>
-        /// Registers a callback function to be invoked whenever the menu changes. The callback receives the key of the last menu (from which it changed) as a parameter.
-        /// </summary>
-        /// <param name="callback"></param>
-        public void MenuChangedAddListener(Action<string> callback)
-        {
-            menuChanged.AddListener(callback);
         }
     }
 }

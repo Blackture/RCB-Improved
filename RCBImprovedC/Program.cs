@@ -17,7 +17,7 @@ namespace RCBImprovedC
         static void Main(string[] args)
         {
             Game.Instance.Initialize();
-            Game.Instance.OverrideMenus(menuOverrides);
+            UIManager.Instance.OverrideMenus(menuOverrides);
             //AudioManager.Instance.AddBackgroundMusic(bla);
 
             Game.Instance.Error.AddListener((e) => {
@@ -32,7 +32,7 @@ namespace RCBImprovedC
             });
             // 1. Einmalig registrieren
             Game.Instance.Input.AddListener(OnInputRequest);
-            Game.Instance.MenuChangedAddListener((key) =>
+            UIManager.Instance.MenuChangedAddListener((key) =>
             {
                 int lines = 1;
                 switch (key)
@@ -72,40 +72,42 @@ namespace RCBImprovedC
             }
         }
 
+        public static Dictionary<ConsoleKey, int> MainMenuInputMap = new Dictionary<ConsoleKey, int>()
+        {
+            { ConsoleKey.S, 0 },
+            { ConsoleKey.O, 2 },
+            { ConsoleKey.E, 3 }
+        };
+
         static void MainMenuInput(InputRequest ir)
         {
-            ConsoleKeyInfo code = Console.ReadKey(true);
-            if (Game.Instance.CurrentMenu.Key != "Main Menu") return;
-            switch (code.Key)
+            ConsoleKeyInfo code;
+            do
             {
-                case ConsoleKey.S:
-                    (ir as IntRequest).Reply(0);
-                    break;
-                case ConsoleKey.O:
-                    (ir as IntRequest).Reply(2);
-                    break;
-                case ConsoleKey.E:
-                    (ir as IntRequest).Reply(3);
-                    break;
-            }
+                code = Console.ReadKey(true);
+                if (UIManager.Instance.CurrentElement.Key != "Main Menu") return;
+            } while (MainMenuInputMap.ContainsKey(code.Key) == false);
+
+            (ir as IntRequest).Reply(MainMenuInputMap[code.Key]);
         }
+
+        public static Dictionary<ConsoleKey, int> SettingsMenuInputMap = new Dictionary<ConsoleKey, int>()
+        {
+            { ConsoleKey.B, 0 },
+            { ConsoleKey.E, 11 },
+            { ConsoleKey.Q, 12 }
+        };
 
         static void SettingsMenuInput(InputRequest ir)
         {
-            ConsoleKeyInfo code = Console.ReadKey(true);
-            if (Game.Instance.CurrentMenu.Key != "Settings Menu") return;
-            switch (code.Key)
+            ConsoleKeyInfo code;
+            do
             {
-                case ConsoleKey.B:
-                    (ir as IntRequest).Reply(0);
-                    break;
-                case ConsoleKey.E:
-                    (ir as IntRequest).Reply(11);
-                    break;
-                case ConsoleKey.Q:
-                    (ir as IntRequest).Reply(12);
-                    break;
-            }
+                code = Console.ReadKey(true);
+                if (UIManager.Instance.CurrentElement.Key != "Settings Menu") return;
+            } while (SettingsMenuInputMap.ContainsKey(code.Key) == false);
+
+            (ir as IntRequest).Reply(SettingsMenuInputMap[code.Key]);
         }
 
         public static void ClearCurrentConsoleLine(int line)

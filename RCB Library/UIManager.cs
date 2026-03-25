@@ -124,6 +124,16 @@ namespace RCBImprovedC
             lastElement = currentElement.Key;
             currentElement = el;
             currentElement.Show();
+
+            Input();
+        }
+
+        private void Input()
+        {
+            if (currentElement != null && currentElement is IInputable inputable)
+            {
+                inputable.Input();
+            }
         }
 
         /// <summary>

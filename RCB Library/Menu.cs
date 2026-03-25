@@ -25,7 +25,6 @@ namespace RCBLibrary
         public void Show()
         {
             Render();
-            Input();
         }
 
         public virtual void Render()

@@ -1,8 +1,10 @@
 ﻿using RCBLibrary;
 using RCBLibrary.Events;
 using RCBLibrary.Menus;
+using RCBLibrary.SceneManagement;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Text;
 
 namespace RCBImprovedC
@@ -20,6 +22,8 @@ namespace RCBImprovedC
 
         private Event<string> menuChanged = new Event<string>();
         private Event<IUIElement> uiElementChanged = new Event<IUIElement>();
+
+        private bool inScene = false;
 
         public IUIElement CurrentElement => currentElement;
         public string LastElement => lastElement;
@@ -106,26 +110,35 @@ namespace RCBImprovedC
 
         public void ShowLastElement()
         {
-            ShowElement(lastElement);
+            ShowElement<IUIElement>(lastElement);
         }
 
         public void ShowElement(string key)
+        {
+            ShowElement<IUIElement>(key);
+        }
+
+        public T? ShowElement<T>(string key) where T : class, IUIElement
         {
             IUIElement? el = uiElements.Find(x => x.Key == key);
             if (el == null)
             {
                 new UINotFoundError(lastElement).Send();
-                return;
+                return null;
             }
             if (el.Type == UI_ELEMENT_TYPE.MENU)
             {
                 ShowMenu(key);
+            } else if (el.Type == UI_ELEMENT_TYPE.SCENE)
+            {
+                inScene = true;
             }
             lastElement = currentElement.Key;
             currentElement = el;
             currentElement.Show();
 
             Input();
+            return (T)el;
         }
 
         private void Input()
@@ -134,6 +147,11 @@ namespace RCBImprovedC
             {
                 inputable.Input();
             }
+        }
+
+        public void RegisterScene(Scene scene)
+        {
+            uiElements.Add(scene);
         }
 
         /// <summary>

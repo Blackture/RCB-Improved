@@ -1,4 +1,4 @@
-﻿using RCBLibrary.Character.StatTypes;
+﻿using RCBLibrary.Characters.StatTypes;
 using RCBLibrary.Events;
 using RCBLibrary.Raycast.Axis;
 using RCBLibrary.Input;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RCBLibrary.Characters;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,11 +9,18 @@ namespace RCBLibrary.Input.Requests
     {
         // Request for a character class. Inlcuding info such as name, etc.
         // Request for an action like move etc is an ActionRequest
-
-        //public string Value = "";
-        public CharacterRequest(string info = "") : base(INPUT_TYPE.STR, info)
+        public Character? Value = null;
+        public CharacterRequest(string info = "") : base(INPUT_TYPE.CHARACTER, info)
         {
-            throw new NotImplementedException();
+        }
+
+        public void Reply(Character input)
+        {
+            if (input is Character c)
+            {
+                Value = c;
+                Reply();
+            }
         }
     }
 }

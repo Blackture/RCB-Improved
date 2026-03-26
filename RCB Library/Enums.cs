@@ -13,7 +13,8 @@ namespace RCBLibrary
     public enum INPUT_TYPE
     {
         INT,
-        STR
+        STR,
+        CHARACTER
     }
 
     public enum STAT_TYPE

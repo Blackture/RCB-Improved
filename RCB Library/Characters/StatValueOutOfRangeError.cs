@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RCBLibrary.Character
+namespace RCBLibrary.Characters
 {
     public class StatValueOutOfRangeError : Error
     {

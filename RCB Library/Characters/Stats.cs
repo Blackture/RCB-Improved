@@ -4,7 +4,7 @@ using System.Data.SqlTypes;
 using System.Text;
 using RCBLibrary.Character.StatTypes;
 
-namespace RCBLibrary.Character
+namespace RCBLibrary.Characters
 {
     public class Stats : IStats
     {

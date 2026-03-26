@@ -57,7 +57,7 @@ namespace RCBLibrary.Menus
             ProcessInput((int)i);
         }
 
-        protected override void ProcessInput(int input)
+        private void ProcessInput(int input)
         {
             SETTINGS_MENU_INPUT setting = (SETTINGS_MENU_INPUT)Mathf.Floor(input / 10f);
 

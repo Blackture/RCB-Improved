@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RCBLibrary.Character.StatTypes
+namespace RCBLibrary.Characters.StatTypes
 {
     internal class BoolStat : Stat
     {

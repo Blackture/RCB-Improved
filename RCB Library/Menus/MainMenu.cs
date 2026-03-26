@@ -45,7 +45,7 @@ namespace RCBLibrary.Menus
             ProcessInput((int)i);
         }
 
-        protected override void ProcessInput(int input)
+        private void ProcessInput(int input)
         {
             MAIN_MENU_INPUT inp = (MAIN_MENU_INPUT)input;
             switch (inp)

@@ -1,15 +1,18 @@
-﻿using System;
+﻿using RCBLibrary.Math;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RCBLibrary.Character
+namespace RCBLibrary.Characters
 {
     public class Character : IStats
     {
         private string name;
+        private Vector2 position;
         private Stats stats;
 
         public string Name => name;
+        public Vector2 Position => position;
 
         public Character(string name)
         {

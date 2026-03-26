@@ -35,7 +35,5 @@ namespace RCBLibrary
         public abstract void Input();
 
         public abstract void InputCallback(InputRequest ir);
-
-        protected abstract void ProcessInput(int input);
     }
 }

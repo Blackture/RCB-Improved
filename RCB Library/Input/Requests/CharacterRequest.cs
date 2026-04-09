@@ -10,8 +10,9 @@ namespace RCBLibrary.Input.Requests
         // Request for a character class. Inlcuding info such as name, etc.
         // Request for an action like move etc is an ActionRequest
         public Character? Value = null;
-        public CharacterRequest(string info = "") : base(INPUT_TYPE.CHARACTER, info)
+        public CharacterRequest(Character? character = null, string info = "") : base(INPUT_TYPE.CHARACTER, info)
         {
+            if (character != null) Value = character;
         }
 
         public void Reply(Character input)

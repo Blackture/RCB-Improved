@@ -42,5 +42,8 @@ namespace RCBLibrary.SceneManagement
         public abstract void Input();
 
         public abstract void InputCallback(InputRequest ir);
+
+        public void Register(int index) => this.index = index;
+
     }
 }

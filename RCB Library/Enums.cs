@@ -53,4 +53,10 @@ namespace RCBLibrary
         MENU,
         SCENE
     }
+
+    public enum GENDER
+    {
+        MALE,
+        FEMALE
+    }
 }

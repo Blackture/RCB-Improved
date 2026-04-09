@@ -51,7 +51,7 @@ namespace RCBLibrary.Menus
             switch (inp)
             {
                 case MAIN_MENU_INPUT.Singleplayer:
-                    Game.Instance.Start();
+                    UIManager.Instance.ShowElement("Character Menu");
                     Debug.WriteLine("Start selected");
                     // Select Menu
                     break;

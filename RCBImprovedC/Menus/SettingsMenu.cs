@@ -1,9 +1,11 @@
 ﻿using RCBLibrary;
+using RCBLibrary.Input;
+using RCBLibrary.Input.Requests;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RCBImprovedC
+namespace RCBImprovedC.Menus
 {
     public class SettingsMenu : RCBLibrary.Menus.SettingsMenu
     {

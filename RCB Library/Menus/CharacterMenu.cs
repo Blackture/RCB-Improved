@@ -1,5 +1,6 @@
 ﻿using RCBImprovedC;
 using RCBLibrary.Characters;
+using RCBLibrary.Events;
 using RCBLibrary.Input;
 using RCBLibrary.Input.Errors;
 using RCBLibrary.Input.Requests;
@@ -10,14 +11,23 @@ using System.Text;
 
 namespace RCBLibrary.Menus
 {
-    public class CharacterMenu : Menu, IUIElement
+    public class CharacterMenu : Menu, IUIElement, IInputable
     {
+        private Event onCharacterChanged = new Event();
+
         private Character character;
+        public Character Character => character;
 
         public CharacterMenu() : base("Character Menu")
         {
-            
+            onCharacterChanged.AddListener(OnCharacterChanged);
         }
+
+        public void Initialize()
+        {
+            character = new Character("Placeholder");
+        }
+
         public override void Render()
         {
             Debug.WriteLine("Internal Character Menu Renderer");
@@ -27,7 +37,7 @@ namespace RCBLibrary.Menus
         {
             if (UIManager.Instance.CurrentElement != this) return;
 
-            CharacterRequest r = new CharacterRequest("Character Menu");
+            CharacterRequest r = new CharacterRequest(character, "Character Menu");
             r.Subscribe(InputCallback);
             r.Send();
         }
@@ -44,10 +54,18 @@ namespace RCBLibrary.Menus
                 (new InvalidIntegerInputError<Character?>(c)).Send();
             }
 
-            ProcessInput((Character)c);
+            ProcessInput(c!);
         }
 
         private void ProcessInput(Character input)
+        {
+            if (input == null) return;
+            character = input;
+            onCharacterChanged.Invoke();
+            Input();
+        }
+
+        public virtual void OnCharacterChanged()
         {
             
         }

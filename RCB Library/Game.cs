@@ -1,8 +1,10 @@
 ﻿using RCBImprovedC;
-using RCBLibrary.Character;
+using RCBLibrary.Characters;
 using RCBLibrary.Events;
 using RCBLibrary.Input;
 using RCBLibrary.Menus;
+using RCBLibrary.Raycast.Axis;
+using RCBLibrary.SceneManagement;
 using System.Collections;
 using System.Diagnostics;
 
@@ -56,12 +58,13 @@ namespace RCBLibrary
             UIManager.Instance.ShowElement("Main Menu");
         }
 
-        /// <summary>
-        /// For Main Menu input processor, do not touch.
-        /// </summary>
-        public void Start()
+        public void Start(Action<string> genCallback, Point dimensions)
         {
             inGame = true;
+            ProceduralScene ps = new ProceduralScene(key: "World");
+            ps.Initialize(genCallback, dimensions);
+            UIManager.Instance.RegisterScene(ps);
+            UIManager.Instance.ShowElement("World");
         }
 
         private void OnError(Error error)

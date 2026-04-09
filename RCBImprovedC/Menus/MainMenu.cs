@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RCBImprovedC
+namespace RCBImprovedC.Menus
 {
     public class MainMenu : RCBLibrary.Menus.MainMenu
     {

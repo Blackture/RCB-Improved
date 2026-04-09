@@ -52,6 +52,7 @@ namespace RCBImprovedC
             {
                 { "Main Menu", new MainMenu() },
                 { "Settings Menu", new SettingsMenu() },
+                { "Character Menu", new CharacterMenu() }
             };
 
             uiElements = new List<IUIElement>();
@@ -63,6 +64,7 @@ namespace RCBImprovedC
             {
                 { "Main Menu", new MainMenu() },
                 { "Settings Menu", new SettingsMenu() },
+                { "Character Menu", new CharacterMenu() }
             };
 
             uiElements = [.. additionalElements];
@@ -72,6 +74,7 @@ namespace RCBImprovedC
         {
             uiElements.AddRange(menus.Values);
             (menus["Settings Menu"] as SettingsMenu)?.Initialize(settings);
+            (menus["Character Menu"] as CharacterMenu)?.Initialize();
             currentElement = menus["Main Menu"];
         }
 
@@ -80,10 +83,6 @@ namespace RCBImprovedC
             if (currentElement != null)
             {
                 currentElement.Render();
-            }
-            else
-            {
-                //ReRender Game.
             }
         }
 
@@ -151,6 +150,7 @@ namespace RCBImprovedC
 
         public void RegisterScene(Scene scene)
         {
+            scene.Register(uiElements.Count);
             uiElements.Add(scene);
         }
 

@@ -18,7 +18,7 @@ namespace RCBLibrary.SceneManagement
 
         public Event<string> GenerationUpdate = new Event<string>();
 
-        public ProceduralScene(int index, string? key = null) : base(index, key, true)
+        public ProceduralScene(int index = -1, string? key = null) : base(index, key, true)
         {
         }
 

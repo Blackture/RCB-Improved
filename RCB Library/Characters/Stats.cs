@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Text;
-using RCBLibrary.Character.StatTypes;
+using RCBLibrary.Characters.StatTypes;
 
 namespace RCBLibrary.Characters
 {

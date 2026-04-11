@@ -3,12 +3,14 @@ using RCBLibrary;
 using RCBLibrary.Characters;
 using RCBLibrary.Input;
 using RCBLibrary.Input.Requests;
+using RCBLibrary.Math;
+using RCBLibrary.SceneManagement;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Numerics;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace RCBImprovedC
 {
@@ -30,6 +32,10 @@ namespace RCBImprovedC
             {
                 Handlers.CharacterMenu(ir);
             }
+            else if (ir.Info.StartsWith("PS-"))
+            {
+                Handlers.ProceduralScene(ir);
+            }
         }
 
         public static class Maps
@@ -47,6 +53,14 @@ namespace RCBImprovedC
                 { ConsoleKey.E, 11 },
                 { ConsoleKey.Q, 12 }
             };
+
+            public static Dictionary<ConsoleKey, int> ProceduralScene = new Dictionary<ConsoleKey, int>()
+            {
+                { ConsoleKey.W, 11 },
+                { ConsoleKey.A, 12 },
+                { ConsoleKey.S, 13 },
+                { ConsoleKey.D, 14 }
+            };
         }
 
         public static class Handlers
@@ -62,7 +76,6 @@ namespace RCBImprovedC
 
                 (ir as IntRequest).Reply(Maps.MainMenu[code.Key]);
             }
-
 
             public static void SettingsMenu(InputRequest ir)
             {
@@ -110,7 +123,12 @@ namespace RCBImprovedC
                             return;
                         case ConsoleKey.Spacebar:
                             Console.Clear();
-                            Game.Instance.Start(GenerationScreen.GenerationCallback, new RCBLibrary.Raycast.Axis.Point() { X = Console.BufferWidth, Y = Console.BufferHeight });
+                            List<Action<MapData>> renderCallbacks = new List<Action<MapData>>()
+                            {
+                                MapDataRenderer.Renderer,
+                                MapDataRenderer.MoveCharacter
+                            };
+                            Game.Instance.Start(GenerationScreen.GenerationCallback, renderCallbacks, new RCBLibrary.Raycast.Axis.Point() { X = Console.BufferWidth, Y = Console.BufferHeight });
                             break;
                     }
                 } while (cm.Active == Menus.CharacterMenu.SETTING.NONE);
@@ -254,6 +272,18 @@ namespace RCBImprovedC
                         break;
                 }
 
+            }
+
+            public static void ProceduralScene(InputRequest ir)
+            {
+                ConsoleKeyInfo code;
+                do
+                {
+                    code = Console.ReadKey(true);
+                    if (UIManager.Instance.CurrentElement.Key.StartsWith("PS-")) return;
+                } while (Maps.ProceduralScene.ContainsKey(code.Key) == false);
+
+                (ir as IntRequest).Reply(Maps.ProceduralScene[code.Key]);
             }
         }
     }

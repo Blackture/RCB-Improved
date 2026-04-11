@@ -172,5 +172,10 @@ namespace RCBImprovedC
         {
             menuChanged.AddListener(callback);
         }
+
+        public IUIElement GetElement(string key)
+        {
+            return uiElements.Find(x => x.Key == key)!;
+        }
     }
 }

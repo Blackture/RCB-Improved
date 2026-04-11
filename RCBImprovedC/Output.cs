@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RCBLibrary.Math;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -25,5 +26,15 @@ namespace RCBImprovedC
             Console.SetCursorPosition(0, currentLineCursor);
         }
 
+        public static void ClearPosition(int left, int line)
+        {
+            Console.SetCursorPosition(left, line);
+            Console.Write(" ");
+        }
+
+        public static (int left, int line) ConvertTo(Vector2 pos)
+        {
+            return ((int)pos.X, (int)(Console.BufferHeight - pos.Y));
+        }
     }
 }

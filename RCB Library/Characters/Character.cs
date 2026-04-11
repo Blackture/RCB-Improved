@@ -11,8 +11,8 @@ namespace RCBLibrary.Characters
         private string name;
         private GENDER gender;
         private Color color = Color.FromKnownColor(KnownColor.Magenta);
-        private Vector2 position;
-        private Stats stats;
+        private Vector2 position = new Vector2(0,0);
+        private Stats stats = new Stats();
 
         public string Name => name;
         public GENDER Gender 
@@ -25,7 +25,11 @@ namespace RCBLibrary.Characters
             get => color;
             set => color = value;
         }
-        public Vector2 Position => position;
+        public Vector2 Position
+        {
+            get => position;
+            set => position = value;
+        }
 
         public Character(string name)
         {

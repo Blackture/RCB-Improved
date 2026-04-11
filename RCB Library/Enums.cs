@@ -59,4 +59,14 @@ namespace RCBLibrary
         MALE,
         FEMALE
     }
+
+    public enum PS_INPUT
+    {
+        MOVEMENT = 1,
+    }
+
+    public enum BIOME
+    {
+        MOUNTAIN,
+    }
 }

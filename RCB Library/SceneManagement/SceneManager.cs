@@ -29,7 +29,7 @@ namespace RCBLibrary.SceneManagement
 
         public string CreateProceduralScene(Action<MapData> render, string key = null, Action<string> generationUpdateCallback = null, Point? dimensions = null)
         {
-            ProceduralScene ps = new ProceduralScene(scenes.Count, key);
+            ProceduralScene ps = new ProceduralScene(index: scenes.Count, key: key); 
             RegisterScene(ps);
             ps.Initialize(generationUpdateCallback, dimensions);
             ps.OnRender.AddListener(render);

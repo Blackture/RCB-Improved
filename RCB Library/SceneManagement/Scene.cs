@@ -25,7 +25,7 @@ namespace RCBLibrary.SceneManagement
         public bool IsProcedural => isProcedural;
         public int Index => index;
 
-        public Event<MapData> OnRender = new Event<MapData>();
+        public Event<MapDataEventArgs> OnRender = new Event<MapDataEventArgs>();
 
         public Scene(int index, string? key = null, bool isProcedural = false)
         {

@@ -9,11 +9,11 @@ namespace RCBLibrary.Raycast
 {
     public class RaycastHit
     {
-        public static bool NoBlock(int x, int y, PSC psc) //for mountains
+        public static bool NoBlock(int x, int y, MapData data) //for mountains
         {
             bool NoBlock = true;
             
-            if (psc.BlockedPoints.Contains(new Axis.Point() { X = x, Y = y }))
+            if (data.BlockedPoints.Contains(new Axis.Point() { X = x, Y = y }))
             {
                 NoBlock = false;
             }

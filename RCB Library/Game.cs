@@ -66,12 +66,13 @@ namespace RCBLibrary
         /// <param name="genCallback"></param>
         /// <param name="rendererCallbacks"></param>
         /// <param name="dimensions"></param>
-        public void Start(Action<string> genCallback, List<Action<MapData>> rendererCallbacks, Point dimensions)
+        public void Start(Action<string> genCallback, Action<MapDataEventArgs> mapRendererCallback, Action<MoveEventArgs> moveCallback, Point dimensions)
         {
             inGame = true;
             ProceduralScene ps = new ProceduralScene(key: "World");
             ps.Initialize(genCallback, dimensions);
-            ps.OnRender += rendererCallbacks[0];
+            ps.OnRender += mapRendererCallback;
+            ps.CharacterMoved += moveCallback;
             UIManager.Instance.RegisterScene(ps);
             UIManager.Instance.ShowElement("World");
         }

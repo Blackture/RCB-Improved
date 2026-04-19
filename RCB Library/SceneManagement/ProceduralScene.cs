@@ -7,6 +7,7 @@ using RCBLibrary.Input.Errors;
 using RCBLibrary.Input.Requests;
 using RCBLibrary.Math;
 using RCBLibrary.Menus;
+using RCBLibrary.Raycast;
 using RCBLibrary.Raycast.Axis;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace RCBLibrary.SceneManagement
         public MapData? mapData = null;
 
         public Event<string> GenerationUpdate = new Event<string>();
-        public Event<MapData> CharacterMoved = new Event<MapData>();
+        public Event<MoveEventArgs> CharacterMoved = new Event<MoveEventArgs>();
 
         public ProceduralScene(BIOME? biome = null, int index = -1, string? key = null) : base(index, key, true)
         {
@@ -35,7 +36,7 @@ namespace RCBLibrary.SceneManagement
         {
             if (IsProcedural && CanRenderMap(mapData!))
             {
-                OnRender.Invoke(mapData!);
+                OnRender.Invoke(new MapDataEventArgs(mapData!));
             }
         }
 
@@ -84,6 +85,7 @@ namespace RCBLibrary.SceneManagement
             {
                 SpawnPoint = psc.SpawnPoint,
                 character = (UIManager.Instance.GetElement("Character Menu") as CharacterMenu)?.Character ?? new Character("Example"),
+                lastCharacterPosition = psc.SpawnPoint,
                 StonePoints = psc.StonePoints,
                 BlockedPoints = psc.BlockedPoints,
                 LR_StoneTriangles = psc.LR_StoneTriangles,
@@ -98,7 +100,7 @@ namespace RCBLibrary.SceneManagement
             mapData = md;
             generated = true;
             
-            if (CanRenderMap(md)) OnRender.Invoke(md);
+            if (CanRenderMap(md)) OnRender.Invoke(new MapDataEventArgs(md));
         }
 
         public void OnGenerationUpdate(string s)
@@ -132,43 +134,37 @@ namespace RCBLibrary.SceneManagement
 
         private void ProcessInput(int input)
         {
-            PS_INPUT setting = (PS_INPUT)Mathf.Floor(input / 10f);
+            PS_INPUT psIn = (PS_INPUT)(input / 10);
+            if (psIn != PS_INPUT.MOVEMENT) return;
 
-            switch (setting)
-            { 
-                case PS_INPUT.MOVEMENT:
-                    int i = input % 10;
-                    mapData!.lastCharacterPosition = mapData.character.Position;
-                    switch (i)
-                    {
-                        case 1:
-                            // W ------------------------------
-                            if (mapData!.character.Position.Y + 1 >= mapData!.mapSize.Y)
-                            mapData!.character.Position.Y++;
-                            break;
-                        case 2:
-                            // A ------------------------------
-                            if (mapData!.character.Position.Y - 1 >= 0)
-                                mapData!.character.Position.Y--;
-                            break;
-                        case 3:
-                            // S ------------------------------
-                            if (mapData!.character.Position.X - 1 >= 0)
-                                mapData!.character.Position.X--;
-                            break;
-                        case 4:
-                            // D ------------------------------
-                            if (mapData!.character.Position.X + 1 >= mapData!.mapSize.X)
-                                mapData!.character.Position.X--;
-                            break;
-                    }
-                    CharacterMoved.Invoke(mapData!);
-                    break;
+            int direction = input % 10;
+            Vector2 oldPos = mapData!.character.Position; // Capture BEFORE change
+            Vector2 nextPos = new Vector2(oldPos.X, oldPos.Y); ;
+
+            switch (direction)
+            {
+                case 1: nextPos.Y++; break;
+                case 2: nextPos.X--; break;
+                case 3: nextPos.Y--; break;
+                case 4: nextPos.X++; break;
             }
 
-            Input();
-        }
+            // Bounds and Collision Check
+            if (nextPos.X >= 0 && nextPos.X < mapData.mapSize.X &&
+                nextPos.Y >= 0 && nextPos.Y < mapData.mapSize.Y)
+            {
+                if (RaycastHit.NoBlock((int)nextPos.X, (int)nextPos.Y, mapData))
+                {
+                    // Update the state
+                    mapData.character.Position = nextPos;
 
+                    // Broadcast the snapshot!
+                    CharacterMoved?.Invoke(new MoveEventArgs(oldPos, nextPos, mapData));
+                }
+            }
+
+            Input(); // Recurse for next input
+        }
 
     }
 }

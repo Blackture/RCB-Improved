@@ -17,6 +17,8 @@ namespace RCBImprovedC
 
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.CursorVisible = false;
             Game.Instance.Initialize();
             UIManager.Instance.OverrideMenus(menuOverrides);
             //AudioManager.Instance.AddBackgroundMusic(bla);

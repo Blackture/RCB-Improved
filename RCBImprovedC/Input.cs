@@ -123,12 +123,7 @@ namespace RCBImprovedC
                             return;
                         case ConsoleKey.Spacebar:
                             Console.Clear();
-                            List<Action<MapData>> renderCallbacks = new List<Action<MapData>>()
-                            {
-                                MapDataRenderer.Renderer,
-                                MapDataRenderer.MoveCharacter
-                            };
-                            Game.Instance.Start(GenerationScreen.GenerationCallback, renderCallbacks, new RCBLibrary.Raycast.Axis.Point() { X = Console.BufferWidth, Y = Console.BufferHeight });
+                            Game.Instance.Start(GenerationScreen.GenerationCallback, MapDataRenderer.Renderer, MapDataRenderer.MoveCharacter, new RCBLibrary.Raycast.Axis.Point() { X = Console.BufferWidth, Y = Console.BufferHeight });
                             break;
                     }
                 } while (cm.Active == Menus.CharacterMenu.SETTING.NONE);

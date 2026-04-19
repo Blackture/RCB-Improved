@@ -97,12 +97,10 @@ namespace RCBLibrary.SceneManager.MapGeneration
                 }
                 else if (y % 3 == 0)
                 {
-                    Console.Clear();
                     psc.LoadingUpdate.Invoke("Generating...");
                 }
                 else
                 {
-                    Console.Clear();
                     psc.LoadingUpdate.Invoke("Generating.");
                 }
             } //Generates middle points
@@ -110,11 +108,9 @@ namespace RCBLibrary.SceneManager.MapGeneration
             psc.LoadingUpdate.Invoke("Loading.");
             Spread(15, 5, psc);
 
-            Console.Clear();
             psc.LoadingUpdate.Invoke("Loading..");
             BlockPoints(Biom, psc);
 
-            Console.Clear();
             psc.LoadingUpdate.Invoke("Loading...");
             spaceManager.Manage(psc);
 
@@ -150,7 +146,6 @@ namespace RCBLibrary.SceneManager.MapGeneration
                 }
                 //Thread.Sleep(2);
             }
-            Console.CursorVisible = false;
         }
 
         public void Spread(int SpreadL, int SpreadP, PSC psc)

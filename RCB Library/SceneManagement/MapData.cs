@@ -1,4 +1,5 @@
-﻿using RCBLibrary.Events;
+﻿using RCBLibrary.Entity;
+using RCBLibrary.Events;
 using RCBLibrary.Math;
 using RCBLibrary.Raycast.Axis;
 using System;
@@ -21,5 +22,7 @@ namespace RCBLibrary.SceneManagement
         public List<Point> BL_StoneTriangles = new List<Point>(); //Bottom Left
         public List<Point> TL_StoneTriangles = new List<Point>(); //Top Left
         public List<Point> LR_StoneTriangles = new List<Point>(); //Left Right (Bottom/Top)
+        public List<IEntity> entities = new List<IEntity>();
+        public List<Point> spawnablePoints = new List<Point>();
     }
 }

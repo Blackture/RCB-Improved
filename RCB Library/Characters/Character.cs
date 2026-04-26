@@ -1,4 +1,5 @@
-﻿using RCBLibrary.Math;
+﻿using RCBLibrary.Inventories;
+using RCBLibrary.Math;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,6 +14,7 @@ namespace RCBLibrary.Characters
         private Color color = Color.FromKnownColor(KnownColor.Magenta);
         private Vector2 position = new Vector2(0,0);
         private Stats stats = new Stats();
+        private Inventory inventory = new Inventory();
 
         public string Name => name;
         public GENDER Gender 
@@ -30,6 +32,8 @@ namespace RCBLibrary.Characters
             get => position;
             set => position = value;
         }
+
+        public Inventory Inventory => inventory;
 
         public Character(string name)
         {

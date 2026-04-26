@@ -41,6 +41,7 @@ namespace RCBLibrary.SceneManager.MapGeneration
                 {
                     // 4. Success! Pick a random point from this valid region
                     psc.SpawnPoint = FFPoints[rnd.Next(FFPoints.Count)];
+                    psc.spawnablePoints = FFPoints;
                     return;
                 }
                 else

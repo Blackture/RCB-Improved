@@ -1,6 +1,7 @@
 ﻿using NAudio.SoundFont;
 using RCBImprovedC;
 using RCBLibrary.Characters;
+using RCBLibrary.Entity;
 using RCBLibrary.Events;
 using RCBLibrary.Input;
 using RCBLibrary.Input.Errors;
@@ -93,7 +94,8 @@ namespace RCBLibrary.SceneManagement
                 BL_StoneTriangles = psc.BL_StoneTriangles,
                 TL_StoneTriangles = psc.TL_StoneTriangles,
                 TR_StoneTriangles = psc.TR_StoneTriangles,
-                mapSize = new Point() { X = psc.Width, Y = psc.Height }
+                mapSize = new Point() { X = psc.Width, Y = psc.Height },
+                spawnablePoints = psc.spawnablePoints
             };
             md.character.Position = psc.SpawnPoint;
             md.biome = biome;
@@ -160,6 +162,17 @@ namespace RCBLibrary.SceneManagement
 
                     // Broadcast the snapshot!
                     CharacterMoved?.Invoke(new MoveEventArgs(oldPos, nextPos, mapData));
+                    foreach (ICollectible c in EntityManager.Instance.GetCollectibles())
+                    {
+                        IEntity? e = c as IEntity;
+                        if (e != null)
+                        {
+                            foreach (string uid in e.Keys)
+                            {
+                                c.IsInReach(uid, mapData.character);
+                            }
+                        }
+                    }
                 }
             }
 

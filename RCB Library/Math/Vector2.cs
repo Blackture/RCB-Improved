@@ -120,6 +120,12 @@ namespace RCBLibrary.Math
         {
             return v.GetLength();
         }
+
+        public static float Distance(Vector2 v1, Vector2 v2)
+        {
+            return (v2 - v1).Length;
+        }
+
         public static float AngleBetween(Vector2 a, Vector2 b)
         {
             if (a == Zero && b == Zero) return 0.0f;

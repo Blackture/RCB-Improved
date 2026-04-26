@@ -28,6 +28,7 @@ namespace RCBLibrary.SceneManagement
         public List<Point> BL_StoneTriangles = new List<Point>(); //Bottom Left
         public List<Point> TL_StoneTriangles = new List<Point>(); //Top Left
         public List<Point> LR_StoneTriangles = new List<Point>(); //Left Right (Bottom/Top)
+        public List<Point> spawnablePoints = new List<Point>();
         //public static List<Player.UI.IItem> Stone = new List<Player.UI.IItem>();
 
         public void AddBlock(int X, int Y)

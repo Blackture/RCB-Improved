@@ -140,7 +140,7 @@ namespace RCBLibrary.SceneManagement
             if (psIn != PS_INPUT.MOVEMENT) return;
 
             int direction = input % 10;
-            Vector2 oldPos = mapData!.character.Position; // Capture BEFORE change
+            Vector2 oldPos = mapData!.character.Position;
             Vector2 nextPos = new Vector2(oldPos.X, oldPos.Y); ;
 
             switch (direction)
@@ -160,7 +160,6 @@ namespace RCBLibrary.SceneManagement
                     // Update the state
                     mapData.character.Position = nextPos;
 
-                    // Broadcast the snapshot!
                     CharacterMoved?.Invoke(new MoveEventArgs(oldPos, nextPos, mapData));
                     foreach (ICollectible c in EntityManager.Instance.GetCollectibles())
                     {
@@ -176,7 +175,7 @@ namespace RCBLibrary.SceneManagement
                 }
             }
 
-            Input(); // Recurse for next input
+            Input();
         }
 
     }

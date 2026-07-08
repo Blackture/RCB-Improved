@@ -44,9 +44,12 @@ namespace RCBLibrary.SceneManagement
         /// <summary>
         /// Initialize Renderer
         /// </summary>
-        public void Initialize(Action<string> generationUpdateCallback = null, Point? dimensions = null)
+        public void Initialize(Action<string>? generationUpdateCallback = null, Point? dimensions = null)
         {
-            GenerationUpdate.AddListener(generationUpdateCallback);
+            if (generationUpdateCallback != null)
+            {
+                GenerationUpdate.AddListener(generationUpdateCallback);
+            }
             if (IsProcedural && dimensions != null) PSC.Generate(dimensions.Value.Y, dimensions.Value.X, OnGenerationUpdate, OnGenerated);
             isInitialized = true;
         }

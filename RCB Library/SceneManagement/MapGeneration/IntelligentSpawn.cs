@@ -18,10 +18,8 @@ namespace RCBLibrary.SceneManager.MapGeneration
         public void Player(PSC psc)
         {
             Random rnd = new Random();
-            HashSet<Point> visited = new HashSet<Point>();
+            List<Point> biggestArea = new List<Point>();
 
-            // 1. Get a list of all potential walkable points to avoid constant looping
-            // We exclude the borders (1 to Width-1) as per your original logic
             List<Point> availablePoints = Enumerable.Range(1, psc.Width - 2)
                 .SelectMany(x => Enumerable.Range(1, psc.Height - 2), (x, y) => new Point(x, y))
                 .Where(p => !psc.BlockedPoints.Contains(p))
@@ -29,32 +27,28 @@ namespace RCBLibrary.SceneManager.MapGeneration
 
             while (availablePoints.Count > 0)
             {
-                // 2. Pick a random starting point from available tiles
-                int index = rnd.Next(availablePoints.Count);
-                Point startPoint = availablePoints[index];
-
-                // 3. Run FloodFill once for this specific area
-                // Note: Assuming FloodFill populates FFPoints and returns the count
+                Point startPoint = availablePoints[0];
                 FloodFill(startPoint.X, startPoint.Y, psc);
 
-                if (FFPoints.Count >= 50)
+                if (FFPoints.Count > biggestArea.Count)
                 {
-                    // 4. Success! Pick a random point from this valid region
-                    psc.SpawnPoint = FFPoints[rnd.Next(FFPoints.Count)];
-                    psc.spawnablePoints = FFPoints;
-                    return;
+                    biggestArea = FFPoints.ToList();
                 }
-                else
-                {
-                    // 5. Optimization: If the area is too small (< 50), 
-                    // remove all those points from availablePoints so we don't try them again.
-                    availablePoints.RemoveAll(p => FFPoints.Contains(p));
-                    FFPoints.Clear();
-                }
+
+                availablePoints.RemoveAll(p => FFPoints.Contains(p));
+                FFPoints.Clear();
             }
 
-            // Fallback if no area >= 50 exists
+            if (biggestArea.Count > 0)
+            {
+                psc.SpawnPoint = biggestArea[rnd.Next(biggestArea.Count)];
+                psc.spawnablePoints = biggestArea;
+                FFPoints = biggestArea;
+                return;
+            }
+
             psc.SpawnPoint = new Point(1, 1);
+            psc.spawnablePoints = new List<Point>() { psc.SpawnPoint };
         }
 
         public void FloodFill(int startX, int startY, PSC psc)

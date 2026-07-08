@@ -1,5 +1,6 @@
 ﻿using RCBImprovedC;
 using RCBLibrary.Characters;
+using RCBLibrary.Entity;
 using RCBLibrary.Events;
 using RCBLibrary.Input;
 using RCBLibrary.Menus;
@@ -36,17 +37,22 @@ namespace RCBLibrary
             };
 
             UIManager.CreateInstance();
+            EntityManager.CreateInstance();
         }
 
-        public void Initialize(Stat[] stats = null, IUIElement[] elements = null)
+        public void Initialize(Stat[]? stats = null, IUIElement[]? elements = null)
         {
             Error.AddListener(OnError);
-            Stats.Initialize(stats);
+            if (stats != null)
+            {
+                Stats.Initialize(stats);
+            }
             settings = new SettingsData()
             {
                 BackgroundMusicVolume = 20,
             };
-            UIManager.CreateInstance(elements.ToList());
+            UIManager.CreateInstance(elements?.ToList() ?? new List<IUIElement>());
+            EntityManager.CreateInstance();
         }
 
         public void Awake()

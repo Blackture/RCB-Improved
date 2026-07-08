@@ -61,16 +61,16 @@ namespace RCBLibrary
 
         public void PlayBackgroundMusic()
         {
-            if (backgroundMusic[currentBMIndex].IsPlaying)
-            {
-                backgroundMusic[currentBMIndex].Stop();
-            }
-
             if (backgroundMusic.Count <= 0)
             {
                 // If this triggers, check your "Copy to Output Directory" settings!
                 new NoBackgroundMusicError().Send();
                 return;
+            }
+
+            if (backgroundMusic[currentBMIndex].IsPlaying)
+            {
+                backgroundMusic[currentBMIndex].Stop();
             }
 
             // Just Play. The callback is already registered in Initialize.
@@ -96,6 +96,7 @@ namespace RCBLibrary
             if (index < 0 || index >= backgroundMusic.Count)
             {
                 new OutOfRangeError(0, backgroundMusic.Count - 1, index);
+                return;
             }
             currentBMIndex = index;
             PlayBackgroundMusic();
@@ -103,11 +104,23 @@ namespace RCBLibrary
 
         public void SetBackgroundMusicVolume(int volume)
         {
+            if (backgroundMusic.Count <= 0)
+            {
+                new NoBackgroundMusicError().Send();
+                return;
+            }
+
             backgroundMusic[currentBMIndex].SetVolume(volume);
         }
 
         private void PlayNextBackgroundMusic()
         {
+            if (backgroundMusic.Count <= 0)
+            {
+                new NoBackgroundMusicError().Send();
+                return;
+            }
+
             currentBMIndex = (currentBMIndex + 1) % backgroundMusic.Count;
             PlayBackgroundMusic();
         }

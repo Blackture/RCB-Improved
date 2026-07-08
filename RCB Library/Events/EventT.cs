@@ -11,7 +11,7 @@ namespace RCBLibrary.Events
     {
         private delegate void Method(T t);
 
-        private Method collection;
+        private Method? collection;
 
         public void AddListener(Action<T> method)
         {
@@ -25,7 +25,7 @@ namespace RCBLibrary.Events
         }
         public void RemoveAllListeners()
         {
-            Delegate.RemoveAll(collection, collection);
+            collection = null;
         }
 
         public void Invoke(T t)

@@ -11,6 +11,14 @@ namespace RCBLibrary.SceneManager.MapGeneration
 
     public class Disperser
     {
+        private static void AddFillerPoint(MapGenerator mg, PSC psc, int x, int y)
+        {
+            if (x < 1 || x >= psc.Width) return;
+            if (y < 0 || y >= psc.Height) return;
+
+            mg.FillerPoints.Add(new Point() { X = x, Y = y });
+        }
+
         public void Disperse(char Axis, Point CenterPoint, int Dispersion, PSC psc, MapGenerator mg)
         {
             switch (Axis)
@@ -35,14 +43,12 @@ namespace RCBLibrary.SceneManager.MapGeneration
 
                 for (int i = 0; i < Left; i++)
                 {
-                    Point p = new Point() { X = (Center.X - i - 1), Y = Center.Y };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X - i - 1, Center.Y);
                 }
 
                 for (int i = 0; i < Right; i++)
                 {
-                    Point p = new Point() { X = (Center.X + i + 1), Y = Center.Y };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X + i + 1, Center.Y);
                 }
             }
 
@@ -53,47 +59,29 @@ namespace RCBLibrary.SceneManager.MapGeneration
 
                 for (int i = 0; i < Left; i++)
                 {
-                    Point p = new Point() { X = (Center.X - i - 1), Y = Center.Y };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X - i - 1, Center.Y);
                 }
 
                 for (int i = 0; i < Right; i++)
                 {
-                    Point p = new Point() { X = (Center.X + i + 1), Y = Center.Y };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X + i + 1, Center.Y);
                 }
             }
 
             else if ((Center.X - Dispersion * 2) < 1 && (Center.X + Dispersion * 2) < psc.Width)
             {
-                int _CenterX;
-                if (Center.X - 1 <= 0)
-                {
-                    _CenterX = 1;
-                }
-                else
-                {
-                    _CenterX = Center.X;
-                }
-
-                int Left = mg.generation.Next(1, _CenterX);
-                int ZR = psc.Width - Center.X;
-                if (ZR + Center.X >= 0)
-                {
-                    Left = 0;
-                }
+                int availableLeft = Center.X - 1;
+                int Left = availableLeft > 0 ? mg.generation.Next(1, System.Math.Min(availableLeft, Dispersion * 2) + 1) : 0;
                 int Right = mg.generation.Next(1, Dispersion * 2);
 
                 for (int i = 0; i < Left; i++)
                 {
-                    Point p = new Point() { X = (Center.X - i - 1), Y = Center.Y };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X - i - 1, Center.Y);
                 }
 
                 for (int i = 0; i < Right; i++)
                 {
-                    Point p = new Point() { X = (Center.X + i + 1), Y = Center.Y };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X + i + 1, Center.Y);
                 }
             }
 
@@ -103,8 +91,7 @@ namespace RCBLibrary.SceneManager.MapGeneration
 
                 for (int i = 0; i < Right; i++)
                 {
-                    Point p = new Point() { X = (Center.X + i + 1), Y = Center.Y };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X + i + 1, Center.Y);
                 }
             }
 
@@ -114,8 +101,7 @@ namespace RCBLibrary.SceneManager.MapGeneration
 
                 for (int i = 0; i < Left; i++)
                 {
-                    Point p = new Point() { X = (Center.X - i - 1), Y = Center.Y };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X - i - 1, Center.Y);
                 }
             }
         }
@@ -129,14 +115,12 @@ namespace RCBLibrary.SceneManager.MapGeneration
 
                 for (int i = 0; i < Top; i++)
                 {
-                    Point p = new Point() { X = Center.X, Y = Center.Y - i - 1 };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X, Center.Y - i - 1);
                 }
 
                 for (int i = 0; i < Bottom; i++)
                 {
-                    Point p = new Point() { X = Center.X, Y = Center.Y + i + 1 };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X, Center.Y + i + 1);
                 }
             }
 
@@ -147,48 +131,30 @@ namespace RCBLibrary.SceneManager.MapGeneration
 
                 for (int i = 0; i < Top; i++)
                 {
-                    Point p = new Point() { X = Center.X, Y = Center.Y - i - 1 };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X, Center.Y - i - 1);
                 }
 
                 for (int i = 0; i < Bottom; i++)
                 {
-                    Point p = new Point() { X = Center.X, Y = Center.Y + i + 1 };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X, Center.Y + i + 1);
                 }
             }
 
             else if ((Center.Y - Dispersion) < 1 && (Center.Y + Dispersion) < psc.Height)
             {
-                int _CenterY;
-                if (Center.Y - 1 <= 0)
-                {
-                    _CenterY = 1;
-                }
-                else
-                {
-                    _CenterY = Center.Y;
-                }
-
-                int Top = mg.generation.Next(1, _CenterY);
-                int HR = psc.Height - Center.Y;
-                if (HR + Center.Y >= 0)
-                {
-                    Top = 0;
-                }
+                int availableTop = Center.Y - 1;
+                int Top = availableTop > 0 ? mg.generation.Next(1, System.Math.Min(availableTop, Dispersion) + 1) : 0;
 
                 int Bottom = mg.generation.Next(1, Dispersion);
 
                 for (int i = 0; i < Top; i++)
                 {
-                    Point p = new Point() { X = Center.X, Y = (Center.Y - i - 1) };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X, Center.Y - i - 1);
                 }
 
                 for (int i = 0; i < Bottom; i++)
                 {
-                    Point p = new Point() { X = Center.X, Y = (Center.Y + i + 1) };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X, Center.Y + i + 1);
                 }
             }
 
@@ -198,8 +164,7 @@ namespace RCBLibrary.SceneManager.MapGeneration
 
                 for (int i = 0; i < Bottom; i++)
                 {
-                    Point p = new Point() { X = Center.X, Y = Center.Y + i + 1 };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X, Center.Y + i + 1);
                 }
             }
 
@@ -209,8 +174,7 @@ namespace RCBLibrary.SceneManager.MapGeneration
 
                 for (int i = 0; i < Top; i++)
                 {
-                    Point p = new Point() { X = Center.X, Y = Center.Y - i - 1 };
-                    mg.FillerPoints.Add(p);
+                    AddFillerPoint(mg, psc, Center.X, Center.Y - i - 1);
                 }
             }
         }

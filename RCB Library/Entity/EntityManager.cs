@@ -73,18 +73,26 @@ namespace RCBLibrary.Entity
             return registeredEntities.Find(e => e.Id == id);
         }
 
+        private ProceduralScene? CurrentProceduralScene()
+        {
+            return UIManager.Instance.CurrentElement as ProceduralScene;
+        }
+
         public bool KillEntity(string uid, string id)
         {
-            if (UIManager.Instance.CurrentElement.Key.StartsWith("PS"))
+            ProceduralScene? scene = CurrentProceduralScene();
+            if (scene != null)
             {
-                MapData? data = (UIManager.Instance.CurrentElement as ProceduralScene)?.mapData;
+                MapData? data = scene.mapData;
                 if (data == null) return false;
                 List<IEntity>? entities = data.entities;
                 if (entities != null)
                 {
                     IEntity? entity = entities.Find(x => x.Id == id);
                     if (entity == null) return false;
-                    data.BlockedPoints.Where(x => x != new Point() { X = (int)entity[uid].X, Y = (int)entity[uid].Y });
+                    Point blockedPoint = new Point() { X = (int)entity[uid].X, Y = (int)entity[uid].Y };
+                    data.BlockedPoints.RemoveAll(x => x == blockedPoint);
+                    return true;
                 }
             }
             return false;
@@ -92,9 +100,10 @@ namespace RCBLibrary.Entity
 
         public bool KillAll(string id)
         {
-            if (UIManager.Instance.CurrentElement.Key.StartsWith("PS"))
+            ProceduralScene? scene = CurrentProceduralScene();
+            if (scene != null)
             {
-                MapData? data = (UIManager.Instance.CurrentElement as ProceduralScene)?.mapData;
+                MapData? data = scene.mapData;
                 if (data == null) return false;
                 List<IEntity>? entities = data.entities;
                 if (entities != null)
@@ -103,8 +112,11 @@ namespace RCBLibrary.Entity
                     if (entity == null) return false;
                     foreach (string k in entity.Keys)
                     {
-                        data.BlockedPoints.Where(x => x != new Point() { X = (int)entity[k].X, Y = (int)entity[k].Y });
+                        Point blockedPoint = new Point() { X = (int)entity[k].X, Y = (int)entity[k].Y };
+                        data.BlockedPoints.RemoveAll(x => x == blockedPoint);
                     }
+                    data.entities.Remove(entity);
+                    return true;
                 }
             }
             return false;
@@ -116,20 +128,22 @@ namespace RCBLibrary.Entity
             if (!ValidPosition(position)) return false;
             if (entity == null) return false;
             string uid = entity.Instantiate(position);
-            if (UIManager.Instance.CurrentElement.Key.StartsWith("PS"))
+            ProceduralScene? scene = CurrentProceduralScene();
+            if (scene != null)
             {
                 if (entity is ICollectible && IsTooClose(uid, entity.Id)) return false;
-                (UIManager.Instance.CurrentElement as ProceduralScene)?.mapData?.entities.Add(entity);
-                (UIManager.Instance.CurrentElement as ProceduralScene)?.mapData?.BlockedPoints.Add(new Point() { X = (int)entity[uid].X, Y = (int)entity[uid].Y });
+                scene.mapData?.entities.Add(entity);
+                scene.mapData?.BlockedPoints.Add(new Point() { X = (int)entity[uid].X, Y = (int)entity[uid].Y });
             }
             return true;
         }
 
         public bool ValidPosition(Vector2 position)
         {
-            if (UIManager.Instance.CurrentElement.Key.StartsWith("PS"))
+            ProceduralScene? scene = CurrentProceduralScene();
+            if (scene != null)
             {
-                bool? valid = (UIManager.Instance.CurrentElement as ProceduralScene)?.mapData?.spawnablePoints.Contains(new Point() { X = (int)position.X, Y = (int)position.Y });
+                bool? valid = scene.mapData?.spawnablePoints.Contains(new Point() { X = (int)position.X, Y = (int)position.Y });
                 if (valid != null && valid == true)
                 {
                     return true;

@@ -118,7 +118,7 @@ namespace RCBLibrary.SceneManager.MapGeneration
         {
             for (int Y = 1; Y < psc.Height; Y++)
             {
-                for (int X = 1; X < psc.Height; X++)
+                for (int X = 1; X < psc.Width; X++)
                 {
                     Point Current = new Point() { X = X, Y = Y };
                     Point CheckerRight = new Point() { X = X + 1, Y = Y };
